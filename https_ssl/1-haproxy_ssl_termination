@@ -9,10 +9,9 @@ defaults
     timeout server 50000ms
 
 frontend http-in
-    bind *:80 
-    bind *:443 ssl crt /etc/letsencrypt/live/www.mybridget.tech/fullchain.pem
+    bind *:80
     mode http
-    default_backend web-backend
+    redirect scheme https code 301 if !{ ssl_fc }
 
 frontend https-frontend
     bind *:443 ssl crt /etc/letsencrypt/live/www.mybridget.tech/fullchain.pem
