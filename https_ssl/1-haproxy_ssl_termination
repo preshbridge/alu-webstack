@@ -1,0 +1,25 @@
+global
+    daemon
+    maxconn 256
+
+defaults
+    mode http
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend http-in
+    bind *:80 
+    bind *:443 ssl crt /etc/letsencrypt/live/www.mybridget.tech/fullchain.pem
+    mode http
+    default_backend web-backend
+
+frontend https-frontend
+    bind *:443 ssl crt /etc/letsencrypt/live/www.mybridget.tech/fullchain.pem
+    mode http
+    default_backend web-backend
+
+backend web-backend
+    balance roundrobin
+    server web-01 50.16.48.217 check
+    server web-02 3.83.236.201 check
